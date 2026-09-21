@@ -35,24 +35,24 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   if (!session) return null;
 
   return (
-    <div className="flex h-screen bg-gray-50 text-gray-900">
+    <div className="flex h-screen text-ink">
       {/* Sidebar */}
-      <aside className="w-64 bg-[#1F3864] text-white flex flex-col">
+      <aside className="w-64 bg-forest text-cream flex flex-col">
         <div className="p-6">
           <h1 className="text-2xl font-bold tracking-wider">Cetrofarm</h1>
-          <p className="text-sm text-gray-300 mt-1">Backup Portal</p>
+          <p className="text-sm text-cream/80 mt-1">Backup Portal</p>
         </div>
         
         <nav className="flex-1 px-4 space-y-2 mt-4">
           <Link 
             href="/upload" 
-            className={`block px-4 py-3 rounded transition-colors ${pathname === '/upload' ? 'bg-white/10 font-medium' : 'hover:bg-white/5'}`}
+            className={`block px-4 py-3 rounded transition-colors ${pathname === '/upload' ? 'bg-cream/10 font-medium' : 'hover:bg-cream/5'}`}
           >
             Upload Dokumen
           </Link>
           <Link 
             href="/riwayat" 
-            className={`block px-4 py-3 rounded transition-colors ${pathname === '/riwayat' ? 'bg-white/10 font-medium' : 'hover:bg-white/5'}`}
+            className={`block px-4 py-3 rounded transition-colors ${pathname === '/riwayat' ? 'bg-cream/10 font-medium' : 'hover:bg-cream/5'}`}
           >
             Riwayat & Arsip
           </Link>
@@ -62,14 +62,14 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       {/* Main Content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b px-8 py-4 flex justify-between items-center">
+        <header className="bg-cream-dark/30 shadow-sm border-b border-sage/30 px-8 py-4 flex justify-between items-center">
           <div>
-            <h2 className="text-lg font-semibold text-gray-700">Departemen: {session.departemen}</h2>
-            <p className="text-sm text-gray-500">Login sebagai: {session.nama}</p>
+            <h2 className="text-lg font-semibold text-forest-dark">Departemen: {session.departemen}</h2>
+            <p className="text-sm text-forest">Login sebagai: {session.nama}</p>
           </div>
           <button 
             onClick={handleLogout}
-            className="text-sm px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-md font-medium transition-colors"
+            className="text-sm px-4 py-2 border border-harvest text-harvest hover:bg-harvest hover:text-cream rounded-md font-medium transition-colors"
           >
             Logout
           </button>

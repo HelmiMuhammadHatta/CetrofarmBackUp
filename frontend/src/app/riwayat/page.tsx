@@ -80,15 +80,15 @@ export default function RiwayatPage() {
   if (!session) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center flex-wrap gap-4">
+    <div className="bg-cream rounded-lg shadow-sm border border-sage/50">
+      <div className="p-6 border-b border-sage/30 flex justify-between items-center flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Riwayat & Arsip</h2>
-          <p className="text-sm text-gray-500 mt-1">Daftar dokumen yang diunggah departemen {session.departemen}</p>
+          <h2 className="text-2xl font-bold text-forest-dark">Riwayat & Arsip</h2>
+          <p className="text-sm text-ink/60 mt-1">Daftar dokumen yang diunggah departemen {session.departemen}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm font-medium text-gray-700">Total Penggunaan Storage</p>
-          <p className="text-2xl font-bold text-[#1F3864]">{capacity.totalSizeMb} MB</p>
+          <p className="text-sm font-medium text-ink">Total Penggunaan Storage</p>
+          <p className="text-2xl font-bold text-forest">{capacity.totalSizeMb} MB</p>
         </div>
       </div>
 
@@ -99,7 +99,7 @@ export default function RiwayatPage() {
             placeholder="Cari berdasarkan nama file..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-1/3 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+            className="w-full md:w-1/3 px-3 py-2 border border-sage bg-white rounded-md focus:outline-none focus:ring-2 focus:ring-forest text-ink"
           />
         </div>
 
@@ -112,35 +112,35 @@ export default function RiwayatPage() {
         {loading ? (
           <div className="space-y-4">
             {[1,2,3].map(i => (
-              <div key={i} className="h-12 bg-gray-100 rounded animate-pulse"></div>
+              <div key={i} className="h-12 bg-sage-light/20 rounded animate-pulse"></div>
             ))}
           </div>
         ) : filteredData.length === 0 ? (
-          <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-lg border border-dashed">
+          <div className="text-center py-12 text-ink/50 bg-cream-dark/20 rounded-lg border border-sage/50 border-dashed">
             Tidak ada riwayat dokumen ditemukan.
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full divide-y divide-sage/30">
+              <thead className="bg-cream-dark">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Karyawan</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama File</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-ink/80 uppercase tracking-wider">Tanggal</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-ink/80 uppercase tracking-wider">Karyawan</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-ink/80 uppercase tracking-wider">Nama File</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-ink/80 uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-ink/80 uppercase tracking-wider">Aksi</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-cream divide-y divide-sage/30">
                 {filteredData.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item["Timestamp"]}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item["Nama Karyawan"]}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900 break-all">{item["Nama File"]}</td>
+                  <tr key={idx} className="hover:bg-cream-dark/30">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-ink">{item["Timestamp"]}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-ink/70">{item["Nama Karyawan"]}</td>
+                    <td className="px-6 py-4 text-sm text-ink break-all">{item["Nama File"]}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        item["Status"] === 'Berhasil' ? 'bg-green-100 text-green-800' :
-                        item["Status"] === 'Diarsipkan' ? 'bg-gray-100 text-gray-800' :
+                        item["Status"] === 'Berhasil' ? 'bg-sage text-forest-dark' :
+                        item["Status"] === 'Diarsipkan' ? 'bg-cream-dark text-ink' :
                         'bg-red-100 text-red-800'
                       }`}>
                         {item["Status"]}
@@ -148,7 +148,7 @@ export default function RiwayatPage() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
                       {item["Link Drive"] && (
-                        <a href={item["Link Drive"]} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900">
+                        <a href={item["Link Drive"]} target="_blank" rel="noopener noreferrer" className="text-clay hover:text-clay-light underline">
                           Buka
                         </a>
                       )}

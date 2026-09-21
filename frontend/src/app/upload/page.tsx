@@ -10,6 +10,7 @@ export default function UploadPage() {
   const [kategori, setKategori] = useState("");
   const [namaDokumen, setNamaDokumen] = useState("");
   const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: "", text: "", link: "" });
@@ -35,30 +36,51 @@ export default function UploadPage() {
     }
   }, []);
 
+  const processSelectedFile = (selectedFile: File) => {
+    // Validation
+    const sizeMb = selectedFile.size / (1024 * 1024);
+    if (sizeMb > 25) {
+      setMessage({ type: "error", text: "Ukuran file maksimal 25MB", link: "" });
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+    
+    const allowedExts = ['pdf', 'docx', 'xlsx', 'csv', 'jpg', 'png'];
+    const ext = selectedFile.name.split('.').pop()?.toLowerCase();
+    if (!ext || !allowedExts.includes(ext)) {
+      setMessage({ type: "error", text: "Ekstensi file tidak diizinkan", link: "" });
+      setFile(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+      return;
+    }
+
+    setFile(selectedFile);
+    setMessage({ type: "", text: "", link: "" });
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const selectedFile = e.target.files[0];
-      
-      // Validation
-      const sizeMb = selectedFile.size / (1024 * 1024);
-      if (sizeMb > 25) {
-        setMessage({ type: "error", text: "Ukuran file maksimal 25MB", link: "" });
-        setFile(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
-      
-      const allowedExts = ['pdf', 'docx', 'xlsx', 'csv', 'jpg', 'png'];
-      const ext = selectedFile.name.split('.').pop()?.toLowerCase();
-      if (!ext || !allowedExts.includes(ext)) {
-        setMessage({ type: "error", text: "Ekstensi file tidak diizinkan", link: "" });
-        setFile(null);
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
+      processSelectedFile(e.target.files[0]);
+    }
+  };
 
-      setFile(selectedFile);
-      setMessage({ type: "", text: "", link: "" });
+  const handleDragOver = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      processSelectedFile(e.dataTransfer.files[0]);
     }
   };
 
@@ -131,14 +153,14 @@ export default function UploadPage() {
   if (!session) return null;
 
   return (
-    <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Upload Dokumen</h2>
+    <div className="max-w-2xl mx-auto bg-cream rounded-lg shadow-sm border border-sage p-6">
+      <h2 className="text-2xl font-bold text-forest-dark mb-6">Upload Dokumen</h2>
       
       {message.text && (
-        <div className={`mb-6 p-4 rounded-md border ${message.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-green-50 border-green-200 text-green-700'}`}>
+        <div className={`mb-6 p-4 rounded-md border ${message.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-sage-light/30 border-sage text-forest'}`}>
           <p>{message.text}</p>
           {message.link && (
-            <a href={message.link} target="_blank" rel="noopener noreferrer" className="text-sm underline font-medium mt-1 inline-block">
+            <a href={message.link} target="_blank" rel="noopener noreferrer" className="text-clay underline font-medium mt-1 inline-block">
               Lihat di Google Drive
             </a>
           )}
@@ -147,11 +169,11 @@ export default function UploadPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Kategori Dokumen</label>
+          <label className="block text-sm font-medium text-ink mb-2">Kategori Dokumen</label>
           <select
             value={kategori}
             onChange={(e) => setKategori(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+            className="w-full px-3 py-2 border border-sage rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-forest"
             required
           >
             {kategoriOptions.map(opt => (
@@ -161,37 +183,45 @@ export default function UploadPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Nama Dokumen</label>
+          <label className="block text-sm font-medium text-ink mb-2">Nama Dokumen</label>
           <input
             type="text"
             value={namaDokumen}
             onChange={(e) => setNamaDokumen(e.target.value)}
             placeholder="Contoh: Laporan Keuangan Q1"
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+            className="w-full px-3 py-2 border border-sage rounded-md focus:outline-none focus:ring-2 focus:ring-forest bg-white"
             required
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">Pilih File</label>
-          <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-[#1F3864] transition-colors bg-gray-50">
-            <div className="space-y-1 text-center">
-              <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+          <label className="block text-sm font-medium text-ink mb-2">Pilih File</label>
+          <label 
+            htmlFor="file-upload"
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-md transition-colors cursor-pointer ${
+              isDragging ? "border-forest bg-sage-light/30" : "border-sage hover:border-forest bg-cream-dark/20"
+            }`}
+          >
+            <div className="space-y-1 text-center pointer-events-none">
+              <svg className="mx-auto h-12 w-12 text-sage-light" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                 <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <div className="flex text-sm text-gray-600 justify-center">
-                <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-[#1F3864] hover:text-[#152748] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#1F3864]">
+              <div className="flex text-sm text-ink/80 justify-center">
+                <span className="relative bg-transparent rounded-md font-medium text-forest focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-forest pointer-events-auto">
                   <span>Pilih file</span>
-                  <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} ref={fileInputRef} required />
-                </label>
-                <p className="pl-1">atau klik di sini</p>
+                  <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} ref={fileInputRef} required={!file} />
+                </span>
+                <p className="pl-1">atau klik/drag di sini</p>
               </div>
-              <p className="text-xs text-gray-500">PDF, DOCX, XLSX, CSV, JPG, PNG up to 25MB</p>
+              <p className="text-xs text-ink/60">PDF, DOCX, XLSX, CSV, JPG, PNG up to 25MB</p>
             </div>
-          </div>
+          </label>
           {file && (
-            <div className="mt-2 text-sm text-gray-600">
-              File terpilih: <span className="font-medium text-gray-900">{file.name}</span> ({(file.size / (1024 * 1024)).toFixed(2)} MB)
+            <div className="mt-2 text-sm text-ink/80">
+              File terpilih: <span className="font-medium text-ink">{file.name}</span> ({(file.size / (1024 * 1024)).toFixed(2)} MB)
             </div>
           )}
         </div>
@@ -199,7 +229,7 @@ export default function UploadPage() {
         <button
           type="submit"
           disabled={loading || !file}
-          className="w-full bg-[#1F3864] text-white py-3 px-4 rounded-md hover:bg-[#152748] transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F3864] disabled:opacity-50 flex justify-center items-center"
+          className="w-full bg-forest text-cream py-3 px-4 rounded-md hover:bg-forest-dark transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest disabled:bg-sage-light disabled:opacity-100 flex justify-center items-center"
         >
           {loading ? "Mengunggah..." : "Upload Dokumen"}
         </button>

@@ -42,11 +42,11 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8 border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full bg-cream rounded-lg shadow-md p-8 border border-sage/50">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-[#1F3864]">Cetrofarm</h1>
-          <p className="text-gray-500 mt-2">Internal Backup Portal</p>
+          <h1 className="text-3xl font-bold text-forest-dark">Cetrofarm</h1>
+          <p className="text-forest mt-2">Internal Backup Portal</p>
         </div>
 
         {error && (
@@ -57,11 +57,11 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Departemen</label>
+            <label className="block text-sm font-medium text-ink mb-1">Departemen</label>
             <select
               value={departemen}
               onChange={(e) => setDepartemen(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+              className="w-full px-3 py-2 border border-sage rounded-md focus:outline-none focus:ring-2 focus:ring-forest bg-white"
               required
             >
               <option value="Keuangan">Keuangan</option>
@@ -71,25 +71,25 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Nama Karyawan</label>
+            <label className="block text-sm font-medium text-ink mb-1">Nama Karyawan</label>
             <input
               type="text"
               value={nama}
               onChange={(e) => setNama(e.target.value)}
               placeholder="Masukkan nama lengkap"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+              className="w-full px-3 py-2 border border-sage rounded-md focus:outline-none focus:ring-2 focus:ring-forest bg-white"
               required
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Token Akses</label>
+            <label className="block text-sm font-medium text-ink mb-1">Token Akses</label>
             <input
               type="password"
               value={token}
               onChange={(e) => setToken(e.target.value)}
               placeholder="Masukkan token departemen"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#1F3864]"
+              className="w-full px-3 py-2 border border-sage rounded-md focus:outline-none focus:ring-2 focus:ring-forest bg-white"
               required
             />
           </div>
@@ -97,7 +97,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#1F3864] text-white py-2 px-4 rounded-md hover:bg-[#152748] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1F3864] disabled:opacity-50 mt-4"
+            className="w-full bg-forest text-cream py-2 px-4 rounded-md hover:bg-forest-dark transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-forest disabled:bg-sage-light disabled:opacity-100 mt-4"
           >
             {loading ? "Memverifikasi..." : "Masuk"}
           </button>
