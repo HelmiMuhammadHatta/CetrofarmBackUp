@@ -52,3 +52,7 @@ Portal internal PT Cetro Tama Indonesia (Cetrofarm) untuk unggah dan backup doku
 
 Karena frontend di-host statis (tidak ada backend server-side Node.js), token keamanan tidak di-hardcode melainkan dimasukkan oleh user saat Login dan divalidasi langsung ke Google Apps Script. 
 Sebagai admin IT Cetrofarm, Anda disarankan untuk merotasi (mengubah) token di Script Properties setiap 1-3 bulan untuk menjaga keamanan dari kebocoran token.
+
+## Standard Operating Procedure (SOP)
+
+Untuk panduan penggunaan portal oleh karyawan (termasuk cara login, upload, dan arsip dokumen), silakan lihat file [SOP Cetrofarm Backup Portal](./SOP_Cetrofarm_Backup_Portal.md).
